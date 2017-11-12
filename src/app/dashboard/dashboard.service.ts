@@ -34,4 +34,32 @@ export class DashboardService {
     const convertedDates = `${newDate.getDate()}/${month}/${newDate.getFullYear()}`;
     return convertedDates;
   }
+
+  public setDepartureDates(dates: string[]): string[] {
+    switch (dates.length) {
+      case 0:
+        return;
+      case 1:
+        return [dates[0]];
+      case 2:
+      case 3:
+        return dates[1] ? [dates[0], dates[1]] : [dates[0]];
+      case 4:
+        return [dates[0], dates[1]];
+    }
+  }
+
+  public setReturnDates(dates: string[]): string[] {
+    switch (dates.length) {
+      case 0:
+      case 1:
+      case 2:
+        return;
+      case 3:
+        return [dates[2]];
+      case 4:
+        return [dates[2], dates[3]];
+    }
+  }
+
 }

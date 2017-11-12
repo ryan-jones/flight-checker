@@ -4,14 +4,14 @@ import { GooglePlace } from '../shared/models/google.model';
 import { FlightCheckService } from '../shared/services/flight-check.service';
 import { FlightPathService } from '../shared/services/flight-path.service';
 import { DashboardService } from './dashboard.service';
+import { setDates } from '../utils/utils';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-
   constructor(
     private flightService: FlightCheckService,
     private flightPathService: FlightPathService,
@@ -34,16 +34,17 @@ export class DashboardComponent implements OnInit {
   departureEndDate: string;
   returnStartDate: string;
   returnEndDate: string;
-  mapCanvas: string = 'flightChecker';
+  mapCanvas: 'flightChecker';
 
   durations: string[] = ['result.fly_duration', 'result.return_duration'];
-  checked: boolean = false;
-  toggle: boolean = true;
+  checked = false;
+  toggle = true;
+  departureRange = false;
+  returnRange = false;
 
   ngOnInit() {
     this.initiateMap();
     this.setAutoCompletes();
-    // this.arrivalView = !this.arrivalView ? '' : this.arrivalView;
   }
 
   initiateMap() {
@@ -65,6 +66,7 @@ export class DashboardComponent implements OnInit {
         .getLocation(this.departureView.name)
         .subscribe(result => (this.departureLocation = result.id));
     });
+    console.log('departure', this.departureLocation)
   }
 
   setArrivalAutocomplete() {
@@ -81,25 +83,31 @@ export class DashboardComponent implements OnInit {
 
   searchFlights() {
     this.toggle = false;
-    const dates = [
+    const dates = setDates([
       this.departureStartDate,
       this.departureEndDate,
       this.returnStartDate,
       this.returnEndDate
-    ];
+    ]);
     const newDates = this.dashboardService.formatSelectDates(dates);
     this.arrangeFlightDates(newDates);
   }
 
   arrangeFlightDates(dates: string[]) {
-    const departureDates = [dates[0], dates[1]];
-    const returnDates = [dates[2], dates[3]];
-    const flight = this.flightService.buildFlightPlan(
-      this.departureLocation,
-      this.arrivalLocation,
-      departureDates,
-      returnDates
-    );
+    const departureDates = this.dashboardService.setDepartureDates(dates);
+    const returnDates = this.dashboardService.setReturnDates(dates);
+    const flight = returnDates
+      ? this.flightService.buildFlightPlan(
+          this.departureLocation,
+          this.arrivalLocation,
+          departureDates,
+          returnDates
+        )
+      : this.flightService.buildFlightPlan(
+          this.departureLocation,
+          this.arrivalLocation,
+          departureDates
+        );
     this.getFlights(flight);
   }
 
@@ -124,4 +132,11 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  addDepartureRange() {
+    this.departureRange = !this.departureRange;
+  }
+
+  addReturnRange() {
+    this.returnRange = !this.returnRange;
+  }
 }
