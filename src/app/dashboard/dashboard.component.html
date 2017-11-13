@@ -56,7 +56,25 @@
       </div>
     </div>
   </div>
-  <search-results></search-results>
+
+  <div class="search-result-container">
+    <div class="col-md-5 map">
+      <div id="map-canvas">
+      </div>
+    </div>
+    <div class="col-md-7 search-result">
+      <search-results
+        [departureView]="departureView"
+        [arrivalView]="arrivalView"
+        [durations]="durations"
+        [searchResult]="searchResult"
+        [loaded]="loaded"
+        [searching]="searching"
+        (onAddFlightPath)="addFlightPath($event)"
+        (onRemoveFlightPath)="removeFlightPath()">
+      </search-results>
+    </div>
+  </div>
 </div>
 
 <ng-template #departures>

@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { FlightDetails } from '../models/flights.model';
 import { encodeUrl } from '../../utils/utils';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class FlightCheckService {
   BASE_URL = `https://api.skypicker.com/flights?v=2&locale=en&flyFrom=`;
 
-  constructor(private http: Http) {}
+  constructor(private http: HttpClient) {}
 
   public getLocation(location: string) {
     return this.http
       .get(`https://api.skypicker.com/places?term=${location}&v=2&locale=en`)
-      .map(res => res.json())
       .map(res => {
         return res[0];
       });
@@ -24,7 +23,7 @@ export class FlightCheckService {
       return this.http.get(`${this.BASE_URL}${flight.from}`);
     } else {
       const url = this.setUrl(flight);
-      return this.http.get(url).map(res => res.json());
+      return this.http.get(url);
     }
   }
 
@@ -81,7 +80,7 @@ export class FlightCheckService {
       from: departureLocation,
       to: arrivalLocation,
       departures: departureDates,
-      returns: returnDates ? returnDates : undefined,
+      returns: returnDates.length ? returnDates : undefined,
       type: 'return'
     };
   }

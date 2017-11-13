@@ -1,57 +1,10 @@
 @import '~sass/variables';
 
-.container-fluid {
-  height: 100vh;
-  background-color: $main-background;
-}
 
-.flight-search,
-.flights,
-.dates,
-#departure,
-#arrival,
-#departure-date-start,
-#departure-date-end,
-#return-date-start,
-#return-date-end,
-#search-button,
-.search-result-container {
-  border-radius: 5px;
-}
-
-.flight-search {
-  margin: 1% 2% 0 2%;
-  padding: 2% 2% 1%;
-  background-color: $light-blue;
-  box-shadow: 0px 3px 3px 1px $shadow;
-}
-
-.flight-search-inputs {
-  margin-top: 1%;
-}
-
-.flight-search-btn {
-  margin-top: 1%;
-  text-align: center;
-}
-
-.flights,
-.dates {
-  box-shadow: 0px 3px 10px 1px black;
-}
-
-i {
-  color: #fff;
-}
-
-#search-button {
-  background-color: $dark-blue;
-  color: #fff;
-  margin: 6% 10% 0 0;
-}
-
-#search-button:hover {
-  background-color: green;
+#loading {
+  margin: 5%;
+  background-size: cover;
+  height: 20vh;
 }
 
 .search-result-container {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MapOptions, MapStyles } from '../shared/models/map.model';
+import { MapStyles, MapOptions } from '../shared/models/map.model';
 
 let map;
 declare const google;
@@ -20,7 +20,7 @@ export class DashboardService {
 
   public formatSelectDates(dates: string[]): string[] {
     return (dates = dates.map(date => {
-      return this.formatDate(date);
+      return date ? this.formatDate(date) : date;
     }));
   }
 
@@ -36,30 +36,24 @@ export class DashboardService {
   }
 
   public setDepartureDates(dates: string[]): string[] {
-    switch (dates.length) {
-      case 0:
-        return;
-      case 1:
-        return [dates[0]];
-      case 2:
-      case 3:
-        return dates[1] ? [dates[0], dates[1]] : [dates[0]];
-      case 4:
-        return [dates[0], dates[1]];
-    }
+    const newDates = dates.splice(0, 2);
+    const departureDates = [];
+    newDates.forEach(date => {
+      if (date) {
+        departureDates.push(date);
+      }
+    });
+    return departureDates;
   }
 
   public setReturnDates(dates: string[]): string[] {
-    switch (dates.length) {
-      case 0:
-      case 1:
-      case 2:
-        return;
-      case 3:
-        return [dates[2]];
-      case 4:
-        return [dates[2], dates[3]];
-    }
+    const newDates = dates.splice(2, 4);
+    const returnDates = [];
+    newDates.forEach(date => {
+      if (date) {
+        returnDates.push(date);
+      }
+    });
+    return returnDates;
   }
-
 }
