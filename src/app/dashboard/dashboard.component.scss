@@ -6,8 +6,6 @@
 }
 
 .flight-search,
-.flights,
-.dates,
 #departure,
 #arrival,
 #departure-date-start,
@@ -23,30 +21,15 @@
   margin: 1% 2% 0 2%;
   padding: 2% 2% 1%;
   background-color: $light-blue;
-  box-shadow: 0px 3px 3px 1px $shadow;
 }
 
-.flight-search-inputs {
-  margin-top: 1%;
-}
-
-.flight-search-btn {
-  margin-top: 1%;
-  text-align: center;
-}
-
-.flights,
-.dates {
-  box-shadow: 0px 3px 10px 1px black;
-}
-
-i {
+i,
+#search-button {
   color: #fff;
 }
 
 #search-button {
   background-color: $dark-blue;
-  color: #fff;
   margin: 6% 10% 0 0;
 }
 
@@ -57,23 +40,18 @@ i {
 .search-result-container {
   height: 75vh;
   margin: 2% 2% 1% 2%;
-  background-color: #879dc9;
+  background-color: $light-blue;
   padding: 1%;
-  box-shadow: 0px 3px 6px 1px black;
 }
 
 .container-fluid,
 .search-result-container,
-.ind-route,
 .search-result {
   overflow: scroll;
 }
 
 .map,
-.search-result,
-.ind-route,
-.flights,
-.dates {
+.search-result {
   background-color: #fff;
 }
 
@@ -89,23 +67,10 @@ i {
 
 #map-canvas {
   height: 100%;
-  box-shadow: 1px 3px 3px 1px $shadow;
 }
 
 .search-result {
   border-radius: 0 5px 5px 0;
-}
-
-.results {
-  background-color: #f8f8ff;
-  height: 100%;
-  max-width: 100%;
-}
-
-.results,
-.ind-route {
-  box-shadow: 0px 3px 3px 1px $shadow;
-  margin-bottom: 1%;
 }
 
 .pricing {
@@ -116,20 +81,4 @@ i {
 
 .pricing > h3 {
   margin: 1% 1% -1% 1%;
-}
-
-.routes {
-  margin: 5% 0;
-}
-
-.airline {
-  margin-top: 1%;
-}
-
-.ind-route {
-  border-top: 1px solid $shadow;
-}
-
-.ind-route:hover {
-  box-shadow: 0px 3px 3px 3px $shadow;
 }

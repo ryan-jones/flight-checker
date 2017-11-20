@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="flight-search">
+  <div class="flight-search box-shadow">
     <div class="row flight-search-inputs">
       <div class="col-xs-12 col-md-6">
         <label for="departure">Departing from:</label>
@@ -19,7 +19,7 @@
         </div>
       </div>
     </div>
-    <div class="row flight-search-inputs">
+    <div class="row m-t-1">
       <div class="col-xs-12 col-md-6">
         <label for="arrival">Arriving at:</label>
         <input class="form-control" type="text" id="arrival" #arrival placeholder="Going to" />
@@ -38,14 +38,26 @@
         </div>
       </div>
     </div>
-    <div class="row flight-search-btn">
-      <div class="col-md-3">
+    <div class="row flight-search-btn m-t-1 center">
+      <div class="col-xs-3 col-md-3">
         Less than:
-        <input class="form-control" type="text" placeholder="$200">
+        <div class="input-group">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Currency <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">€EUR</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Separated link</a></li>
+              </ul>
+            </div>
+            <input class="form-control" type="text" [(ngModel)]="priceLimit" placeholder="$200" aria-label="...">
+          </div>
       </div>
       <div class="col-md-3">
         Transfers:
-        <select class="form-control ">
+        <select class="form-control"[(ngModel)]="stopovers">
           <option value="0">Direct</option>
           <option value="1">1 stop</option>
           <option value="2">2+ stops</option>
@@ -57,16 +69,15 @@
     </div>
   </div>
 
-  <div class="search-result-container">
+  <div class="search-result-container box-shadow">
     <div class="col-md-5 map">
-      <div id="map-canvas">
+      <div id="map-canvas" class="box-shadow">
       </div>
     </div>
     <div class="col-md-7 search-result">
-      <search-results
+      <search-results *ngIf="searching"
         [departureView]="departureView"
         [arrivalView]="arrivalView"
-        [durations]="durations"
         [searchResult]="searchResult"
         [loaded]="loaded"
         [searching]="searching"

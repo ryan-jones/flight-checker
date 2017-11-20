@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges, OnInit, Output, EventEmitter } from '@angular/core';
 import { GoogleMap } from '../shared/models/map.model';
-import { SearchResultService } from './search-result.service';
 import { FlightPathService } from '../shared/services/flight-path.service';
 import { FlightCheckService } from '../shared/services/flight-check.service';
 
@@ -14,28 +13,21 @@ export class SearchResultsComponent implements OnChanges {
   @Input() departureView: any;
   @Input() arrivalView: any;
   @Input() searchResult: any;
-  @Input() durations: any;
   @Input() loaded: boolean;
   @Input() searching: boolean;
+  @Input() priceLimit: number;
   @Output() onAddFlightPath: EventEmitter<any> = new EventEmitter<any>();
   @Output() onRemoveFlightPath: EventEmitter<any> = new EventEmitter<any>();
 
   private flightPath: any;
-  private backgroundImage: any;
+
 
   constructor(
     private flightCheckService: FlightCheckService,
     private flightPathService: FlightPathService,
-    private searchService: SearchResultService
   ) {}
 
   ngOnChanges() {
-    if (this.arrivalView) {
-      this.searchService.getDestinationImage(this.arrivalView.name).subscribe(res => {
-        this.backgroundImage = res;
-        console.log('background', this.backgroundImage);
-      });
-    }
   }
 
   addFlightPath(index) {

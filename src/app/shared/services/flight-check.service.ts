@@ -1,34 +1,43 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
-import { FlightDetails } from '../models/flights.model';
+import { FlightDetails, FlightCheckResponse } from '../models/flights.model';
 import { encodeUrl } from '../../utils/utils';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class FlightCheckService {
-  BASE_URL = `https://api.skypicker.com/flights?v=2&locale=en&flyFrom=`;
-
   constructor(private http: HttpClient) {}
 
   public getLocation(location: string) {
     return this.http
-      .get(`https://api.skypicker.com/places?term=${location}&v=2&locale=en`)
-      .map(res => {
-        return res[0];
-      });
+      .get(`https://locations.skypicker.com/?term=${location}`)
+      .map((res: FlightCheckResponse) => res.locations[0]);
   }
 
-  public getFlights(flight: FlightDetails) {
+  public getFlights(flight: FlightDetails, stopovers: number) {
+    const urlParams = this.setParams(stopovers);
+    const priceLimits = this.setPriceLimit(flight);
+    const BASE_URL = `https://api.skypicker.com/flights?flyFrom=${flight.from}`;
     if (!flight.to && !flight.departures) {
-      return this.http.get(`${this.BASE_URL}${flight.from}`);
+      return this.http.get(`${BASE_URL}${priceLimits}${urlParams}&curr=${flight.currency}`);
     } else {
-      const url = this.setUrl(flight);
-      return this.http.get(url);
+      const url = this.setUrl(flight, BASE_URL);
+      return this.http.get(`${url}${priceLimits}${urlParams}&curr=${flight.currency}`);
     }
   }
 
-  public setUrl(flight: FlightDetails): string {
-    const request = this.setRequestUrl(flight);
+  public setParams(stopovers: number): string {
+    return stopovers === 0
+      ? `&directFlights=1`
+      : `&directFlights=0&maxstopovers=${stopovers}`;
+  }
+
+  public setPriceLimit(flight: FlightDetails): string {
+    return flight.priceLimit ? `&price_to=${flight.priceLimit}` : '';
+  }
+
+  public setUrl(flight: FlightDetails, BASE_URL: string): string {
+    const request = this.setRequestUrl(flight, BASE_URL);
     const departureDays = encodeUrl(flight.departures);
     const returnDays = flight.returns ? encodeUrl(flight.returns) : '';
     return returnDays
@@ -36,10 +45,10 @@ export class FlightCheckService {
       : this.setOnewayUrl(request, departureDays);
   }
 
-  public setRequestUrl(flight: FlightDetails) {
+  public setRequestUrl(flight: FlightDetails, BASE_URL: string) {
     return flight.to
-      ? `${this.BASE_URL}${flight.from}&to=${flight.to}&dateFrom=`
-      : `${this.BASE_URL}${flight.from}&dateFrom=`;
+      ? `${BASE_URL}&to=${flight.to}&dateFrom=`
+      : `${BASE_URL}&dateFrom=`;
   }
 
   public setReturnUrl(
@@ -63,8 +72,8 @@ export class FlightCheckService {
 
   public setOnewayUrl(request: string, departureDays: string[]): string {
     const BASE_URL = `${request}${departureDays[0]}`;
-    const MULTI_DEPART_URL = `${BASE_URL}&dateTo=${departureDays[1]}&typeFlight=single`;
-    const SINGLE_DEPART_URL = `${BASE_URL}&typeFlight=single`;
+    const MULTI_DEPART_URL = `${BASE_URL}&dateTo=${departureDays[1]}&typeFlight=oneway`;
+    const SINGLE_DEPART_URL = `${BASE_URL}&typeFlight=oneway`;
     return departureDays.length > 2
       ? `${MULTI_DEPART_URL}`
       : `${SINGLE_DEPART_URL}`;
@@ -74,14 +83,18 @@ export class FlightCheckService {
     departureLocation: string,
     arrivalLocation: string,
     departureDates: string[],
-    returnDates?: string[]
+    currency: string,
+    returnDates?: string[],
+    priceLimit?: number
   ): FlightDetails {
     return {
       from: departureLocation,
       to: arrivalLocation,
       departures: departureDates,
       returns: returnDates.length ? returnDates : undefined,
-      type: 'return'
+      type: 'return',
+      priceLimit: priceLimit ? priceLimit : undefined,
+      currency
     };
   }
 

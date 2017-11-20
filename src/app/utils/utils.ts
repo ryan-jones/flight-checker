@@ -1,6 +1,5 @@
 import { Destination } from '../shared/models/flights.model';
 
-
 export function removeLocation(
   locations: Destination[],
   locationInput: Destination

@@ -1,9 +1,17 @@
+export interface FlightCheckResponse {
+  locations: any[];
+  meta: any;
+}
+
+
 export interface FlightDetails {
   departures: string[];
   from: string;
   returns: string[];
   to: string;
   type: string;
+  priceLimit: number;
+  currency: string;
 }
 
 export interface SearchResult {

@@ -33,16 +33,15 @@ export class DashboardComponent implements OnInit {
   private departureEndDate: string;
   private returnStartDate: string;
   private returnEndDate: string;
+  private selectedCurrency = 'USD';
   private mapCanvas: 'flightChecker';
 
-  private durations: string[] = [
-    'result.fly_duration',
-    'result.return_duration'
-  ];
   private loaded = true;
   private searching = false;
   private departureRange = false;
   private returnRange = false;
+  private priceLimit: number;
+  private stopovers: number;
 
   ngOnInit() {
     this.initiateMap();
@@ -101,17 +100,22 @@ export class DashboardComponent implements OnInit {
       this.departureLocation,
       this.arrivalLocation,
       departureDates,
-      returnDates
+      this.selectedCurrency,
+      returnDates,
+      this.priceLimit
     );
     this.getFlights(flight);
   }
 
   getFlights(flight) {
     this.searching = true;
-    this.flightCheckService.getFlights(flight).subscribe(result => {
-      this.searchResult = result;
-      this.loaded = true;
-    });
+    this.flightCheckService
+      .getFlights(flight, this.stopovers)
+      .subscribe(result => {
+        this.searchResult = result;
+        console.log('searchResult', this.searchResult);
+        this.loaded = true;
+      });
   }
 
   addDepartureRange() {
@@ -129,5 +133,9 @@ export class DashboardComponent implements OnInit {
 
   removeFlightPath(event: null) {
     this.flightPath.setMap(null);
+  }
+
+  setCurrency(currency: string) {
+    this.selectedCurrency = currency;
   }
 }

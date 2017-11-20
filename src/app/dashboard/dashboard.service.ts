@@ -6,6 +6,7 @@ declare const google;
 
 @Injectable()
 export class DashboardService {
+
   public setMap(): any {
     const myOptions = new MapOptions();
     map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
@@ -37,23 +38,18 @@ export class DashboardService {
 
   public setDepartureDates(dates: string[]): string[] {
     const newDates = dates.splice(0, 2);
-    const departureDates = [];
-    newDates.forEach(date => {
+    return newDates.filter(date => {
       if (date) {
-        departureDates.push(date);
+        return date;
       }
     });
-    return departureDates;
   }
 
   public setReturnDates(dates: string[]): string[] {
-    const newDates = dates.splice(2, 4);
-    const returnDates = [];
-    newDates.forEach(date => {
+    return dates.filter(date => {
       if (date) {
-        returnDates.push(date);
+        return date;
       }
     });
-    return returnDates;
   }
 }
