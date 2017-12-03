@@ -10,15 +10,17 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { SearchResultsComponent } from './search-results/search-results.components';
 import { FlightRoutesComponent } from './flight-routes/flight-routes.component';
+import { FlightCheckerComponent } from './flight-checker/flight-checker.component';
 
 
 // services
 import { FlightCheckService } from './shared/services/flight-check.service';
 import { FlightPathService } from './shared/services/flight-path.service';
 import { DashboardService } from './dashboard/dashboard.service';
+import { FlightCheckerViewService } from './flight-checker/flight-checker.service';
+import { SearchResultsService } from './shared/services/search-results.service';
 
 
-import { PriceRangePipe } from './shared/pipes/price-range.pipe';
 
 
 @NgModule({
@@ -28,12 +30,12 @@ import { PriceRangePipe } from './shared/pipes/price-range.pipe';
     NotFoundComponent,
     SearchResultsComponent,
     FlightRoutesComponent,
-    PriceRangePipe
+    FlightCheckerComponent
   ],
   imports: [
     BrowserModule, RoutingModule, FormsModule, HttpClientModule
   ],
-  providers: [FlightCheckService, FlightPathService, DashboardService],
+  providers: [FlightCheckService, FlightPathService, DashboardService, FlightCheckerViewService, SearchResultsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

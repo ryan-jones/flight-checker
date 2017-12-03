@@ -6,13 +6,6 @@
 }
 
 .flight-search,
-#departure,
-#arrival,
-#departure-date-start,
-#departure-date-end,
-#return-date-start,
-#return-date-end,
-#search-button,
 .search-result-container {
   border-radius: 5px;
 }
@@ -21,20 +14,6 @@
   margin: 1% 2% 0 2%;
   padding: 2% 2% 1%;
   background-color: $light-blue;
-}
-
-i,
-#search-button {
-  color: #fff;
-}
-
-#search-button {
-  background-color: $dark-blue;
-  margin: 6% 10% 0 0;
-}
-
-#search-button:hover {
-  background-color: green;
 }
 
 .search-result-container {
@@ -53,10 +32,6 @@ i,
 .map,
 .search-result {
   background-color: #fff;
-}
-
-.map,
-.search-result {
   height: 100%;
   padding: 1%;
 }

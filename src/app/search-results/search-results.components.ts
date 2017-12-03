@@ -1,37 +1,42 @@
-import { Component, Input, OnChanges, OnInit, Output, EventEmitter } from '@angular/core';
-import { GoogleMap } from '../shared/models/map.model';
-import { FlightPathService } from '../shared/services/flight-path.service';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  Input,
+  OnChanges
+} from '@angular/core';
 import { FlightCheckService } from '../shared/services/flight-check.service';
+import { SearchResults, DestinationViews } from './search-results.model';
+import { SearchResultsService } from '../shared/services/search-results.service';
+import { FlightCoordinates } from '../shared/models/flights.model';
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'search-results',
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.scss']
 })
 export class SearchResultsComponent implements OnChanges {
-  @Input() departureView: any;
-  @Input() arrivalView: any;
-  @Input() searchResult: any;
-  @Input() loaded: boolean;
-  @Input() searching: boolean;
-  @Input() priceLimit: number;
+  @Input() destinationViews: DestinationViews;
   @Output() onAddFlightPath: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onRemoveFlightPath: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onRemoveFlightPath: EventEmitter<FlightCoordinates[]> = new EventEmitter<FlightCoordinates[]>();
 
-  private flightPath: any;
-
+  private searchResults: SearchResults;
+  private loaded = false;
 
   constructor(
     private flightCheckService: FlightCheckService,
-    private flightPathService: FlightPathService,
+    private searchResultsService: SearchResultsService
   ) {}
 
   ngOnChanges() {
+    if (this.searchResultsService.searchResults) {
+      this.searchResults = this.searchResultsService.searchResults;
+      this.loaded = true;
+    }
   }
 
-  addFlightPath(index) {
-    const routes = this.searchResult.data[index].route;
+  addFlightPath(index: number) {
+    const routes = this.searchResults.flightResults.data[index].route;
     const coordinates = this.flightCheckService.createFlightCoordinates(routes);
     const lastRoute = routes[routes.length - 1];
     coordinates.push({ lat: lastRoute.latTo, lng: lastRoute.lngTo });

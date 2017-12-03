@@ -1,10 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GoogleMap } from '../shared/models/map.model';
-import { GooglePlace } from '../shared/models/google.model';
-import { FlightCheckService } from '../shared/services/flight-check.service';
 import { FlightPathService } from '../shared/services/flight-path.service';
 import { DashboardService } from './dashboard.service';
-import { setDates } from '../utils/utils';
+import { DestinationViews } from '../search-results/search-results.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,117 +11,22 @@ import { setDates } from '../utils/utils';
 })
 export class DashboardComponent implements OnInit {
   constructor(
-    private flightCheckService: FlightCheckService,
     private flightPathService: FlightPathService,
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
   ) {}
 
-  @ViewChild('departure') departureInput;
-  @ViewChild('arrival') arrivalInput;
-
-  private searchResult: any;
   private flightPath: any;
-  private departureView: GooglePlace;
-  private arrivalView: GooglePlace;
   private map: GoogleMap;
-
-  private departureLocation: string;
-  private arrivalLocation: string;
-  private departureStartDate: string;
-  private departureEndDate: string;
-  private returnStartDate: string;
-  private returnEndDate: string;
-  private selectedCurrency = 'USD';
+  private destinationViews: DestinationViews;
   private mapCanvas: 'flightChecker';
-
-  private loaded = true;
   private searching = false;
-  private departureRange = false;
-  private returnRange = false;
-  private priceLimit: number;
-  private stopovers: number;
 
   ngOnInit() {
     this.initiateMap();
-    this.setAutoCompletes();
   }
 
   initiateMap() {
     this.map = this.dashboardService.setMap();
-  }
-
-  setAutoCompletes() {
-    this.setDepartureAutocomplete();
-    this.setArrivalAutocomplete();
-  }
-
-  setDepartureAutocomplete() {
-    const departureAutocomplete = this.dashboardService.buildAutocomplete(
-      this.departureInput.nativeElement
-    );
-    departureAutocomplete.addListener('place_changed', () => {
-      this.departureView = departureAutocomplete.getPlace();
-      this.flightCheckService
-        .getLocation(this.departureView.name)
-        .subscribe(result => (this.departureLocation = result.id));
-    });
-  }
-
-  setArrivalAutocomplete() {
-    const arrivalAutocomplete = this.dashboardService.buildAutocomplete(
-      this.arrivalInput.nativeElement
-    );
-    arrivalAutocomplete.addListener('place_changed', () => {
-      this.arrivalView = arrivalAutocomplete.getPlace();
-      this.flightCheckService
-        .getLocation(this.arrivalView.name)
-        .subscribe(result => (this.arrivalLocation = result.id));
-    });
-  }
-
-  searchFlights() {
-    this.loaded = false;
-    const dates = [
-      this.departureStartDate,
-      this.departureEndDate,
-      this.returnStartDate,
-      this.returnEndDate
-    ];
-    const newDates = this.dashboardService.formatSelectDates(dates);
-    this.arrangeFlightDates(newDates);
-  }
-
-  arrangeFlightDates(dates: string[]) {
-    const departureDates = this.dashboardService.setDepartureDates(dates);
-    const returnDates = this.dashboardService.setReturnDates(dates);
-    const flight = this.flightCheckService.buildFlightPlan(
-      this.departureLocation,
-      this.arrivalLocation,
-      departureDates,
-      this.selectedCurrency,
-      returnDates,
-      this.priceLimit
-    );
-    this.getFlights(flight);
-  }
-
-  getFlights(flight) {
-    this.searching = true;
-    this.flightCheckService
-      .getFlights(flight, this.stopovers)
-      .subscribe(result => {
-        this.searchResult = result;
-        console.log('searchResult', this.searchResult);
-        this.loaded = true;
-      });
-  }
-
-  addDepartureRange() {
-    this.departureRange = !this.departureRange;
-  }
-
-  addReturnRange() {
-    this.returnRange = !this.returnRange;
   }
 
   addFlightPath(coordinates: any) {
@@ -135,7 +38,11 @@ export class DashboardComponent implements OnInit {
     this.flightPath.setMap(null);
   }
 
-  setCurrency(currency: string) {
-    this.selectedCurrency = currency;
+  onSearching(value: boolean) {
+    this.searching = value;
+  }
+
+  onSetDestinationViews(destinationViews: DestinationViews) {
+    this.destinationViews = destinationViews;
   }
 }

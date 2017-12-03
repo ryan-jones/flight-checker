@@ -1,0 +1,37 @@
+@import '~sass/variables';
+
+.flight-search,
+#departure,
+#arrival,
+#departure-date-start,
+#departure-date-end,
+#return-date-start,
+#return-date-end,
+#search-button,
+.search-result-container {
+  border-radius: 5px;
+}
+
+.flight-search {
+  margin: 1% 2% 0 2%;
+  padding: 2% 2% 1%;
+  background-color: $light-blue;
+}
+
+i,
+#search-button {
+  color: #fff;
+}
+
+#search-button {
+  background-color: $dark-blue;
+  margin: 6% 10% 0 0;
+}
+
+#search-button:hover {
+  background-color: green;
+}
+
+label {
+  color: #fff;
+}

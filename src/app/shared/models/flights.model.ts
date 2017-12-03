@@ -3,7 +3,6 @@ export interface FlightCheckResponse {
   meta: any;
 }
 
-
 export interface FlightDetails {
   departures: string[];
   from: string;
@@ -14,7 +13,12 @@ export interface FlightDetails {
   currency: string;
 }
 
-export interface SearchResult {
+export interface FlightCoordinates {
+  lat: number;
+  lng: number;
+}
+
+export interface FlightResult {
   all_airlines: string[];
   all_stopover_airports: string[];
   connections: string[];
@@ -88,6 +92,6 @@ export class Destination {
       (this.currency = '$'),
       (this.details = ''),
       (this.price = null),
-      (this.days = 0)
+      (this.days = 0);
   }
 }

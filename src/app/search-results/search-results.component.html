@@ -1,18 +1,21 @@
+
 <div class="container-fluid" *ngIf="loaded; else loading">
-  <div class="row results box-shadow" *ngFor="let result of searchResult.data; let i = index" (mouseout)="removeFlightPath(i) "
-    (mouseover)="addFlightPath(i)">
-    <div class="col-xs-2 pricing">
-      <h3> {{result.price | currency:'EUR':"symbol"}}</h3>
-      <p>
-        <i>{{result.nightsInDest}} nights total
-          <span *ngIf="arrivalView">in {{arrivalView.name}}</span>
-        </i>
-      </p>
+  <ng-container *ngIf="searchResults.flightResults.data.length; else noData">
+    <div class="row results box-shadow" *ngFor="let result of searchResults.flightResults.data; let i = index" (mouseout)="removeFlightPath(i) "
+      (mouseover)="addFlightPath(i)">
+      <div class="col-xs-2 pricing">
+        <h3> {{result.price | currency:'EUR':"symbol"}}</h3>
+        <p>
+          <i *ngIf="result.nightsInDest">{{result.nightsInDest}} nights total
+            <span *ngIf="destinationViews.arrivalView">in {{destinationViews.arrivalView.name}}</span>
+          </i>
+        </p>
+      </div>
+      <div class="col-xs-10 routes">
+        <flight-routes *ngFor="let route of result.route" [route]="route"></flight-routes>
+      </div>
     </div>
-    <div class="col-xs-10 routes">
-      <flight-routes *ngFor="let route of result.route let i = index" [route]="route"></flight-routes>
-    </div>
-  </div>
+  </ng-container>
 </div>
 
 
@@ -20,8 +23,12 @@
 <ng-template #loading>
   <div id="loading">
     <h3>Loading ...</h3>
-    <p> Sorry for the wait as we find the cheapest flights from {{departureView.name}}
-      <span *ngIf="arrivalView">to {{arrivalView.name}}</span> for you
+    <p *ngIf="destinationViews.departureView"> Sorry for the wait as we find the cheapest flights from {{destinationViews.departureView.name}}
+      <span *ngIf="destinationViews.arrivalView">to {{destinationViews.arrivalView.name}}</span> for you
     </p>
   </div>
+</ng-template>
+
+<ng-template #noData>
+  <p>Sorry, no flights were found meeting your specs!</p>
 </ng-template>

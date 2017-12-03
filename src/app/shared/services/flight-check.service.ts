@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
-import { FlightDetails, FlightCheckResponse } from '../models/flights.model';
+import { FlightDetails, FlightCheckResponse, FlightCoordinates } from '../models/flights.model';
 import { encodeUrl } from '../../utils/utils';
 import { HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs/Subscription';
 
 @Injectable()
 export class FlightCheckService {
@@ -57,8 +58,8 @@ export class FlightCheckService {
     returnDays: string[]
   ): string {
     const BASE_URL = `${request}${departureDays[0]}`;
-    const MULTI_DEPART_URL = `${BASE_URL}&dateTo=${departureDays[1]}&typeFlight=return&returnFrom=${returnDays[0]}`;
-    const SINGLE_DEPART_URL = `${BASE_URL}&typeFlight=return&returnFrom=${returnDays[0]}`;
+    const MULTI_DEPART_URL = `${BASE_URL}&dateTo=${departureDays[1]}&typeFlight=round&returnFrom=${returnDays[0]}`;
+    const SINGLE_DEPART_URL = `${BASE_URL}&typeFlight=round&returnFrom=${returnDays[0]}`;
     return departureDays.length > 1
       ? this.setReturnDatesUrl(MULTI_DEPART_URL, returnDays)
       : this.setReturnDatesUrl(SINGLE_DEPART_URL, returnDays);
@@ -79,7 +80,7 @@ export class FlightCheckService {
       : `${SINGLE_DEPART_URL}`;
   }
 
-  buildFlightPlan(
+  public buildFlightPlan(
     departureLocation: string,
     arrivalLocation: string,
     departureDates: string[],
@@ -98,13 +99,13 @@ export class FlightCheckService {
     };
   }
 
-  autoCompleteFlightDestination(selectLocation: any): any {
+  public autoCompleteFlightDestination(selectLocation: any): Subscription {
     return this.getLocation(selectLocation.name).subscribe(location => {
       return location.id;
     });
   }
 
-  createFlightCoordinates(routes: any): any {
+  public createFlightCoordinates(routes: any): FlightCoordinates[] {
     return routes.map(route => {
       return { lat: route.latFrom, lng: route.lngFrom };
     });

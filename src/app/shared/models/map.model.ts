@@ -53,7 +53,7 @@ export class MapOptions {
   constructor(
     private options: any = {
       zoom: 2,
-      center: new google.maps.LatLng(10, 0),
+      center: new google.maps.LatLng(0, 0),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     }
   ) {}

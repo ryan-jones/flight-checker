@@ -1,72 +1,6 @@
 <div class="container-fluid">
   <div class="flight-search box-shadow">
-    <div class="row flight-search-inputs">
-      <div class="col-xs-12 col-md-6">
-        <label for="departure">Departing from:</label>
-        <input class="form-control" type="text" id="departure" #departure placeholder="Departing from" />
-      </div>
-      <div class="col-xs-12 col-md-6">
-        <div class="row" *ngIf="!departureRange; else departures">
-          <label for="singleDeparture">Leaving on:</label>
-          <div class="row" id="singleDeparture">
-            <div class="col-xs-12 col-md-10">
-              <input class="form-control" id="departure-date-start" [(ngModel)]="departureStartDate" value="" type="date" name="date" />
-            </div>
-            <div class="col-xs-12 col-md-2">
-              <i id="addDeparture" class="fa fa-plus-circle fa-2x pull-left" aria-hidden="true" (click)="addDepartureRange()"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row m-t-1">
-      <div class="col-xs-12 col-md-6">
-        <label for="arrival">Arriving at:</label>
-        <input class="form-control" type="text" id="arrival" #arrival placeholder="Going to" />
-      </div>
-      <div class="col-xs-12 col-md-6">
-        <div class="row" *ngIf="!returnRange; else returns">
-          <label for="singleReturn">Returning on:</label>
-          <div class="row" id="singleReturn">
-            <div class="col-xs-12 col-md-10">
-              <input class="form-control" id="return-date-start" [(ngModel)]="returnStartDate" value="" type="date" name="date" />
-            </div>
-            <div class="col-xs-12 col-md-2">
-              <i id="addReturn" class="fa fa-plus-circle fa-2x pull-left" aria-hidden="true" (click)="addReturnRange()"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row flight-search-btn m-t-1 center">
-      <div class="col-xs-3 col-md-3">
-        Less than:
-        <div class="input-group">
-            <div class="input-group-btn">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Currency <span class="caret"></span></button>
-              <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">€EUR</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Separated link</a></li>
-              </ul>
-            </div>
-            <input class="form-control" type="text" [(ngModel)]="priceLimit" placeholder="$200" aria-label="...">
-          </div>
-      </div>
-      <div class="col-md-3">
-        Transfers:
-        <select class="form-control"[(ngModel)]="stopovers">
-          <option value="0">Direct</option>
-          <option value="1">1 stop</option>
-          <option value="2">2+ stops</option>
-        </select>
-      </div>
-      <div class="col-md-offset-3 col-md-3">
-        <button class="btn" id="search-button" (click)="searchFlights()">Search for flights</button>
-      </div>
-    </div>
+    <flight-checker (onSearching)="onSearching($event)" (onSetDestinationViews)="onSetDestinationViews($event)"></flight-checker>
   </div>
 
   <div class="search-result-container box-shadow">
@@ -75,49 +9,11 @@
       </div>
     </div>
     <div class="col-md-7 search-result">
-      <search-results *ngIf="searching"
-        [departureView]="departureView"
-        [arrivalView]="arrivalView"
-        [searchResult]="searchResult"
-        [loaded]="loaded"
-        [searching]="searching"
+      <search-results *ngIf="searching && destinationViews"
+        [destinationViews]="destinationViews"
         (onAddFlightPath)="addFlightPath($event)"
         (onRemoveFlightPath)="removeFlightPath()">
       </search-results>
     </div>
   </div>
 </div>
-
-<ng-template #departures>
-  <div class="row">
-    <label for="departureRangeView">Leaving sometime between:</label>
-    <div class="row" id="departureRangeView">
-      <div class="col-xs-12 col-md-5">
-        <input class="form-control" id="departure-date-start" [(ngModel)]="departureStartDate" value="" type="date" name="date" />
-      </div>
-      <div class="col-xs-12 col-md-5">
-        <input class="form-control" id="departure-date-end" [(ngModel)]="departureEndDate" value="" type="date" name="date" />
-      </div>
-      <div class="col-xs-12 col-md-2">
-        <i class="fa fa-times-circle fa-2x pull-left" aria-hidden="true" (click)="addDepartureRange()"></i>
-      </div>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #returns>
-  <div class="row">
-    <label for="returnRangeView">Returning sometime between:</label>
-    <div class="row" id="returnRangeView">
-      <div class="col-xs-12 col-md-5">
-        <input class="form-control" id="return-date-start" [(ngModel)]="returnStartDate" value="" type="date" name="date" />
-      </div>
-      <div class="col-xs-12 col-md-5">
-        <input class="form-control" id="return-date-end" [(ngModel)]="returnEndDate" value="" type="date" name="date" />
-      </div>
-      <div class="col-xs-12 col-md-2">
-        <i class="fa fa-times-circle fa-2x pull-left" aria-hidden="true" (click)="addReturnRange()"></i>
-      </div>
-    </div>
-  </div>
-</ng-template>
