@@ -25,24 +25,16 @@ export class DashboardComponent implements OnInit {
     this.initiateMap();
   }
 
-  initiateMap() {
-    this.map = this.dashboardService.setMap();
-  }
+  initiateMap = () => this.map = this.dashboardService.setMap();
 
   addFlightPath(coordinates: any) {
     this.flightPath = this.flightPathService.setPolyline(coordinates);
     this.flightPath.setMap(this.map);
   }
 
-  removeFlightPath(event: null) {
-    this.flightPath.setMap(null);
-  }
+  removeFlightPath = () => this.flightPath.setMap(null);
 
-  onSearching(value: boolean) {
-    this.searching = value;
-  }
+  onSearching = (value: boolean) => this.searching = value;
 
-  onSetDestinationViews(destinationViews: DestinationViews) {
-    this.destinationViews = destinationViews;
-  }
+  onSetDestinationViews = (destinationViews: DestinationViews) => this.destinationViews = destinationViews;
 }

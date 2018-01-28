@@ -36,15 +36,14 @@ export class FlightPathService {
     this.flightPathData.setMap(this.map);
   }
 
-  public setPolyline(destinationCoordinates: Coordinate[]): GoogleFlightPath {
-    return new google.maps.Polyline({
+  public setPolyline = (destinationCoordinates: Coordinate[]): GoogleFlightPath =>
+    new google.maps.Polyline({
       path: destinationCoordinates,
       geodesic: true,
       strokeColor: 'yellow',
       strokeOpacity: 1.0,
       strokeWeight: 4
-    });
-  }
+    })
 
   public clearPolylines() {
     this.itineraryPath.forEach(flightPathData => {

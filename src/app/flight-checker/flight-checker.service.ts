@@ -4,15 +4,11 @@ declare const google;
 
 @Injectable()
 export class FlightCheckerViewService {
-  public buildAutocomplete(input): any {
-    return new google.maps.places.Autocomplete(input);
-  }
+  public buildAutocomplete = (input): any =>
+    new google.maps.places.Autocomplete(input);
 
-  public formatSelectDates(dates: string[]): string[] {
-    return (dates = dates.map(date => {
-      return date ? this.formatDate(date) : date;
-    }));
-  }
+  public formatSelectDates = (dates: string[]): string[] =>
+    (dates = dates.map(date => (date ? this.formatDate(date) : date)));
 
   public formatDate(date: string): string {
     const newDate = new Date(date);
@@ -21,26 +17,21 @@ export class FlightCheckerViewService {
         ? `0${newDate.getMonth() + 1}`
         : `${newDate.getMonth() + 1}`;
 
-    const convertedDates = `${newDate.getDate()}/${
-      month
-    }/${newDate.getFullYear()}`;
+    const convertedDates = `${newDate.getDate()}/${month}/${newDate.getFullYear()}`;
     return convertedDates;
   }
 
-  public setDepartureDates(dates: string[]): string[] {
-    const newDates = dates.splice(0, 2);
-    return newDates.filter(date => {
+  public setDepartureDates = (dates: string[]): string[] =>
+    dates.splice(0, 2).filter(date => {
       if (date) {
         return date;
       }
-    });
-  }
+    })
 
-  public setReturnDates(dates: string[]): string[] {
-    return dates.filter(date => {
+  public setReturnDates = (dates: string[]): string[] =>
+    dates.filter(date => {
       if (date) {
         return date;
       }
-    });
-  }
+    })
 }

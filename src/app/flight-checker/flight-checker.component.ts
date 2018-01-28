@@ -108,35 +108,18 @@ export class FlightCheckerComponent implements OnInit {
       .subscribe(result => {
         this.flightResults = result;
         this.loaded = true;
-        this.setSearchResults();
-        this.setDestinationViews();
+        this.setSearchResults(this.flightResults);
+        this.setDestinationViews(this.departureView, this.arrivalView);
       });
   }
 
-  addDepartureRange() {
-    this.departureRange = !this.departureRange;
-  }
+  addDepartureRange = () => this.departureRange = !this.departureRange;
 
-  addReturnRange() {
-    this.returnRange = !this.returnRange;
-  }
+  addReturnRange = () => this.returnRange = !this.returnRange;
 
-  setCurrency(currency: string) {
-    this.selectedCurrency = currency;
-  }
+  setCurrency = (currency: string) => this.selectedCurrency = currency;
 
-  setSearchResults() {
-    const searchResults = {
-      flightResults: this.flightResults,
-    };
-    this.searchResultsService.setSearchResults(searchResults);
-  }
+  setSearchResults = (flightResults) => this.searchResultsService.setSearchResults({flightResults});
 
-  setDestinationViews() {
-    const destinationViews = {
-      departureView: this.departureView,
-      arrivalView: this.arrivalView,
-    };
-    this.onSetDestinationViews.emit(destinationViews);
-  }
+  setDestinationViews = (departureView, arrivalView) => this.onSetDestinationViews.emit({departureView, arrivalView});
 }

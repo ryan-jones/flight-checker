@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input} from '@angular/core';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -6,10 +6,7 @@ import { Component, Input, OnChanges } from '@angular/core';
   templateUrl: './flight-routes.component.html',
   styleUrls: ['./flight-routes.component.scss']
 })
-export class FlightRoutesComponent implements OnChanges {
+export class FlightRoutesComponent {
 
   @Input() route: any;
-
-  ngOnChanges() {
-  }
 }
