@@ -6,5 +6,5 @@ import { SearchResults } from '../../search-results/search-results.model';
 export class SearchResultsService {
   public searchResults: SearchResults;
 
-  setSearchResults = (searchResult: SearchResults) => this.searchResults = searchResult;
+  public setSearchResults = (searchResult: SearchResults): SearchResults => this.searchResults = searchResult;
 }

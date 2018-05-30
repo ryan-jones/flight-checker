@@ -13,14 +13,14 @@ export class FlightPathService {
   private flightPathData = new google.maps.Polyline;
   private itineraryPath: any[] = [];
 
-  public setGeocodeMarkers(data: Export, map: GoogleMap) {
+  public setGeocodeMarkers(data: Export, map: GoogleMap): void {
     if (data) {
       this.map = map;
       this.buildflightPath(this.geocoder, data);
     }
   }
 
-  public buildflightPath(geocoder: any, data: Export) {
+  public buildflightPath(geocoder: any, data: Export): void {
     const point = data.point;
     geocoder.geocode({ address: data.name }, (results, status) => {
       if (status === 'OK') {
@@ -29,26 +29,25 @@ export class FlightPathService {
     });
   }
 
-  public createflightPath(point: Coordinate) {
+  public createflightPath(point: Coordinate): void {
     this.destinationCoordinates.push(point);
     this.flightPathData = this.setPolyline(this.destinationCoordinates);
     this.itineraryPath.push(this.flightPathData);
     this.flightPathData.setMap(this.map);
   }
 
-  public setPolyline = (destinationCoordinates: Coordinate[]): GoogleFlightPath =>
-    new google.maps.Polyline({
+  public setPolyline(destinationCoordinates: Coordinate[]): GoogleFlightPath {
+    return new google.maps.Polyline({
       path: destinationCoordinates,
       geodesic: true,
       strokeColor: 'yellow',
       strokeOpacity: 1.0,
       strokeWeight: 4
-    })
-
-  public clearPolylines() {
-    this.itineraryPath.forEach(flightPathData => {
-      flightPathData.setMap(null);
     });
+  }
+
+  public clearPolylines(): void {
+    this.itineraryPath.forEach(flightPathData => flightPathData.setMap(null));
     this.itineraryPath = [];
   }
 }

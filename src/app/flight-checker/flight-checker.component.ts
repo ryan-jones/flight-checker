@@ -4,7 +4,7 @@ import { FlightCheckerViewService } from './flight-checker.service';
 import { FlightCheckService } from '../shared/services/flight-check.service';
 import { FlightDetails } from '../shared/models/flights.model';
 import { SearchResultsService } from '../shared/services/search-results.service';
-import { DestinationViews } from '../search-results/search-results.model';
+import { DestinationViews, SearchResults } from '../search-results/search-results.model';
 
 @Component({
   selector: 'flight-checker',
@@ -46,12 +46,12 @@ export class FlightCheckerComponent implements OnInit {
     this.setAutoCompletes();
   }
 
-  setAutoCompletes() {
+  private setAutoCompletes(): void {
     this.setDepartureAutocomplete();
     this.setArrivalAutocomplete();
   }
 
-  setDepartureAutocomplete() {
+  private setDepartureAutocomplete(): void {
     const departureAutocomplete = this.flightCheckViewService.buildAutocomplete(
       this.departureInput.nativeElement
     );
@@ -63,7 +63,7 @@ export class FlightCheckerComponent implements OnInit {
     });
   }
 
-  setArrivalAutocomplete() {
+  private setArrivalAutocomplete(): void {
     const arrivalAutocomplete = this.flightCheckViewService.buildAutocomplete(
       this.arrivalInput.nativeElement
     );
@@ -75,7 +75,7 @@ export class FlightCheckerComponent implements OnInit {
     });
   }
 
-  searchFlights() {
+  private searchFlights(): void {
     this.loaded = false;
     const dates = [
       this.departureStartDate,
@@ -87,7 +87,7 @@ export class FlightCheckerComponent implements OnInit {
     this.arrangeFlightDates(newDates);
   }
 
-  arrangeFlightDates(dates: string[]) {
+  private arrangeFlightDates(dates: string[]): void {
     const departureDates = this.flightCheckViewService.setDepartureDates(dates);
     const returnDates = this.flightCheckViewService.setReturnDates(dates);
     const flight = this.flightCheckService.buildFlightPlan(
@@ -101,11 +101,11 @@ export class FlightCheckerComponent implements OnInit {
     this.getFlights(flight);
   }
 
-  getFlights(flight: FlightDetails) {
+  private getFlights(flight: FlightDetails): void {
     this.onSearching.emit(true);
     this.flightCheckService
       .getFlights(flight, this.stopovers)
-      .subscribe(result => {
+      .subscribe((result: any) => {
         this.flightResults = result;
         this.loaded = true;
         this.setSearchResults(this.flightResults);
@@ -113,13 +113,13 @@ export class FlightCheckerComponent implements OnInit {
       });
   }
 
-  addDepartureRange = () => this.departureRange = !this.departureRange;
+  private addDepartureRange = (): boolean => this.departureRange = !this.departureRange;
 
-  addReturnRange = () => this.returnRange = !this.returnRange;
+  private addReturnRange = (): boolean => this.returnRange = !this.returnRange;
 
-  setCurrency = (currency: string) => this.selectedCurrency = currency;
+  private setCurrency = (currency: string): string => this.selectedCurrency = currency;
 
-  setSearchResults = (flightResults) => this.searchResultsService.setSearchResults({flightResults});
+  private setSearchResults = (flightResults: any): SearchResults => this.searchResultsService.setSearchResults({flightResults});
 
-  setDestinationViews = (departureView, arrivalView) => this.onSetDestinationViews.emit({departureView, arrivalView});
+  private setDestinationViews = (departureView: GooglePlace, arrivalView: GooglePlace) => this.onSetDestinationViews.emit({ departureView, arrivalView });
 }

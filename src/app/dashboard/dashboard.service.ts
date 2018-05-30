@@ -14,6 +14,4 @@ export class DashboardService {
     map.setOptions({ styles: styles });
     return map;
   }
-
-
 }

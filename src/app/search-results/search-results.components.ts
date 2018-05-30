@@ -35,7 +35,7 @@ export class SearchResultsComponent implements OnChanges {
     }
   }
 
-  addFlightPath(index: number) {
+  private addFlightPath(index: number): void {
     const routes = this.searchResults.flightResults.data[index].route;
     const coordinates = this.flightCheckService.createFlightCoordinates(routes);
     const lastRoute = routes[routes.length - 1];
@@ -43,7 +43,5 @@ export class SearchResultsComponent implements OnChanges {
     this.onAddFlightPath.emit(coordinates);
   }
 
-  removeFlightPath() {
-    this.onRemoveFlightPath.emit(null);
-  }
+  private removeFlightPath = (): void => this.onRemoveFlightPath.emit(null);
 }
