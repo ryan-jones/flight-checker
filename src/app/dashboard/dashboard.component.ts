@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { GoogleMap } from '../shared/models/map.model';
-import { FlightPathService } from '../shared/services/flight-path.service';
-import { DashboardService } from './dashboard.service';
-import { DestinationViews } from '../search-results/search-results.model';
+import { FlightPathService } from '../services/flight-path.service';
+import { DashboardService } from '../services/dashboard.service';
+import { GoogleMap } from '../models/map.model';
+import { DestinationViews } from '../models/search-results.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,10 +10,7 @@ import { DestinationViews } from '../search-results/search-results.model';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  constructor(
-    private flightPathService: FlightPathService,
-    private dashboardService: DashboardService,
-  ) {}
+  constructor(private flightPathService: FlightPathService, private dashboardService: DashboardService) {}
 
   private flightPath: any;
   private map: GoogleMap;
@@ -25,16 +22,16 @@ export class DashboardComponent implements OnInit {
     this.initiateMap();
   }
 
-  initiateMap = () => this.map = this.dashboardService.setMap();
+  private initiateMap = (): GoogleMap => this.map = this.dashboardService.setMap();
 
-  addFlightPath(coordinates: any) {
+  private addFlightPath(coordinates: any): void {
     this.flightPath = this.flightPathService.setPolyline(coordinates);
     this.flightPath.setMap(this.map);
   }
 
-  removeFlightPath = () => this.flightPath.setMap(null);
+  private removeFlightPath = (): void => this.flightPath.setMap(null);
 
-  onSearching = (value: boolean) => this.searching = value;
+  private onSearching = (value: boolean): boolean => this.searching = value;
 
-  onSetDestinationViews = (destinationViews: DestinationViews) => this.destinationViews = destinationViews;
+  private onSetDestinationViews = (destinationViews: DestinationViews): DestinationViews => this.destinationViews = destinationViews;
 }

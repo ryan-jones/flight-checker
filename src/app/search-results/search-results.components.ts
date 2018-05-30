@@ -5,10 +5,10 @@ import {
   Input,
   OnChanges
 } from '@angular/core';
-import { FlightCheckService } from '../shared/services/flight-check.service';
-import { SearchResults, DestinationViews } from './search-results.model';
-import { SearchResultsService } from '../shared/services/search-results.service';
-import { FlightCoordinates } from '../shared/models/flights.model';
+import { FlightCoordinates } from '../models/flights.model';
+import { FlightCheckService } from '../services/flight-check.service';
+import { SearchResultsService } from '../services/search-results.service';
+import { DestinationViews, SearchResults } from '../models/search-results.model';
 
 @Component({
   selector: 'search-results',
@@ -35,7 +35,7 @@ export class SearchResultsComponent implements OnChanges {
     }
   }
 
-  addFlightPath(index: number) {
+  private addFlightPath(index: number): void {
     const routes = this.searchResults.flightResults.data[index].route;
     const coordinates = this.flightCheckService.createFlightCoordinates(routes);
     const lastRoute = routes[routes.length - 1];
@@ -43,7 +43,5 @@ export class SearchResultsComponent implements OnChanges {
     this.onAddFlightPath.emit(coordinates);
   }
 
-  removeFlightPath() {
-    this.onRemoveFlightPath.emit(null);
-  }
+  private removeFlightPath = (): void => this.onRemoveFlightPath.emit(null);
 }

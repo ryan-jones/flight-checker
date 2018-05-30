@@ -1,5 +1,6 @@
-import { FlightResult } from '../shared/models/flights.model';
-import { GooglePlace } from '../shared/models/google.model';
+import { FlightResult } from './flights.model';
+import { GooglePlace } from './google.model';
+
 
 export interface SearchResults {
   flightResults: FlightResult;
