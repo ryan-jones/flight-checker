@@ -5,7 +5,6 @@ import {
   FlightCheckResponse,
   FlightCoordinates
 } from '../models/flights.model';
-import { encodeUrl } from '../../utils/utils';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
@@ -23,62 +22,56 @@ export class FlightCheckService {
   }
 
   public getFlights(flight: FlightDetails, stopovers: number): Observable<any> {
+    let params = this.setBaseParams(flight, stopovers);
 
-    let params = new HttpParams();
-    params = params.append('flyFrom', `${flight.from}`);
-    params = params.append('curr', `${flight.currency}`);
-    params = this.checkStopovers(stopovers, params);
-    params = this.setPriceLimit(flight, params);
-    const BASE_URL = `${this.apiURL}?flyFrom=${flight.from}`;
-    if (!flight.to && !flight.departures) {
-      console.log('no to or departures');
-      return this.http.get(`${this.apiURL}`, { params });
-    } else {
-      params = this.setUrlParams(flight, BASE_URL, params);
-      return this.http.get(`${this.apiURL}`, { params });
+    if (flight.to && flight.departures) {
+      params = this.setAdditionalParams(flight, params);
     }
+    return this.http.get(`${this.apiURL}`, { params });
   }
 
-  public checkStopovers(stopovers: number, params: HttpParams): HttpParams {
+  setBaseParams(flight: FlightDetails, stopovers: number): HttpParams {
+    let params = new HttpParams().append('flyFrom', `${flight.from}`).append('curr', `${flight.currency}`);
+    params = this.setStopoverParams(stopovers, params);
+    params = this.setPriceLimitParams(flight, params);
+    return params;
+  }
+
+  public setStopoverParams(stopovers: number, params: HttpParams): HttpParams {
     if (stopovers === 0) {
       params = params.append('directFlights', '1');
     } else {
-      params = params.append('directFlights', '0');
-      params = params.append('maxstopovers', `${stopovers}`);
+      params = params.append('directFlights', '0').append('maxstopovers', `${stopovers}`);
     }
     return params;
   }
 
-  public setPriceLimit(flight: FlightDetails, params: HttpParams): HttpParams {
+  public setPriceLimitParams(flight: FlightDetails, params: HttpParams): HttpParams {
     if (flight.priceLimit) {
       params = params.append('price_to', `${flight.priceLimit}`);
     }
     return params;
   }
 
-  public setUrlParams(flight: FlightDetails, BASE_URL: string, params: HttpParams): HttpParams {
-    params = this.addFlightToParams(flight, BASE_URL, params);
+  public setAdditionalParams(flight: FlightDetails, params: HttpParams): HttpParams {
     const departureDays = (flight.departures);
-    params = params.append('dateFrom', `${departureDays[0]}`);
+    if (departureDays.length) {
+      params = params.append('dateFrom', `${departureDays[0]}`);
+    }
+    params = this.addFlightToParams(flight, params);
     const returnDays = flight.returns || '';
     return returnDays ? this.setReturnParams(params, departureDays, returnDays) : this.setOnewayParams(params, departureDays);
   }
 
-  public addFlightToParams(flight: FlightDetails, BASE_URL: string, params: HttpParams) {
+  public addFlightToParams(flight: FlightDetails, params: HttpParams) {
     if (flight.to) {
       params = params.append('to', `${flight.to}`);
     }
     return params;
   }
+
   public setReturnParams(params: HttpParams, departureDays: string[], returnDays: string[]): HttpParams {
-    params = params.append('typeFlight', 'round');
-    params = params.append('returnFrom', `${returnDays[0]}`);
-
-    // tslint:disable-next-line:max-line-length
-    return (departureDays.length > 1) ? this.setReturnDatesUrl(returnDays, params) : this.setReturnDatesUrl(returnDays, params);
-  }
-
-  public setReturnDatesUrl(returnDays: string[], params: HttpParams): HttpParams {
+    params = params.append('typeFlight', 'round').append('returnFrom', `${returnDays[0]}`);
 
     if (returnDays.length > 2) {
       params = params.append('returnTo', `${returnDays[1]}`);

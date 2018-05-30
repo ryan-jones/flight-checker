@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { GoogleMap } from '../shared/models/map.model';
-import { FlightPathService } from '../shared/services/flight-path.service';
-import { DashboardService } from './dashboard.service';
+import { FlightPathService } from '../services/flight-path.service';
+import { DashboardService } from '../services/dashboard.service';
+import { GoogleMap } from '../models/map.model';
 import { DestinationViews } from '../search-results/search-results.model';
 
 @Component({

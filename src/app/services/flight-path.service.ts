@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GoogleFlightPath, Export, Destination } from '../models/flights.model';
 import { Coordinate, GoogleMap } from '../models/map.model';
-import { removeLocation } from '../../utils/utils';
 
 declare const google;
 
