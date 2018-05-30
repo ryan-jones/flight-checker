@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
-import { DestinationViews, SearchResults } from '../search-results/search-results.model';
 import { GooglePlace } from '../models/google.model';
 import { FlightCheckerViewService } from '../services/flight-checker.service';
 import { FlightCheckService } from '../services/flight-check.service';
 import { SearchResultsService } from '../services/search-results.service';
 import { FlightDetails } from '../models/flights.model';
+import { DestinationViews, SearchResults } from '../models/search-results.model';
 
 
 @Component({

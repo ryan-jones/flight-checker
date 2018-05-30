@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FlightPathService } from '../services/flight-path.service';
 import { DashboardService } from '../services/dashboard.service';
 import { GoogleMap } from '../models/map.model';
-import { DestinationViews } from '../search-results/search-results.model';
+import { DestinationViews } from '../models/search-results.model';
 
 @Component({
   selector: 'app-dashboard',

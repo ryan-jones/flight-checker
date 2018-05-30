@@ -5,10 +5,10 @@ import {
   Input,
   OnChanges
 } from '@angular/core';
-import { SearchResults, DestinationViews } from './search-results.model';
 import { FlightCoordinates } from '../models/flights.model';
 import { FlightCheckService } from '../services/flight-check.service';
 import { SearchResultsService } from '../services/search-results.service';
+import { DestinationViews, SearchResults } from '../models/search-results.model';
 
 @Component({
   selector: 'search-results',
