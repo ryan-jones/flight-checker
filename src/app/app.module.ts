@@ -6,11 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 // components
 import { AppComponent } from './app.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { NotFoundComponent } from './not-found/not-found.component';
-import { SearchResultsComponent } from './search-results/search-results.components';
-import { FlightRoutesComponent } from './flight-routes/flight-routes.component';
-import { FlightCheckerComponent } from './flight-checker/flight-checker.component';
+
 
 // services
 import { FlightCheckService } from './services/flight-check.service';
@@ -18,6 +14,11 @@ import { FlightPathService } from './services/flight-path.service';
 import { DashboardService } from './services/dashboard.service';
 import { FlightCheckerViewService } from './services/flight-checker.service';
 import { SearchResultsService } from './services/search-results.service';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { SearchResultsComponent } from './components/search-results/search-results.components';
+import { FlightRoutesComponent } from './components/flight-routes/flight-routes.component';
+import { FlightCheckerComponent } from './components/flight-checker/flight-checker.component';
 
 @NgModule({
   declarations: [

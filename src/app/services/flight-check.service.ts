@@ -30,14 +30,14 @@ export class FlightCheckService {
     return this.http.get(`${this.apiURL}`, { params });
   }
 
-  setBaseParams(flight: FlightDetails, stopovers: number): HttpParams {
+  private setBaseParams(flight: FlightDetails, stopovers: number): HttpParams {
     let params = new HttpParams().append('flyFrom', `${flight.from}`).append('curr', `${flight.currency}`);
     params = this.setStopoverParams(stopovers, params);
     params = this.setPriceLimitParams(flight, params);
     return params;
   }
 
-  public setStopoverParams(stopovers: number, params: HttpParams): HttpParams {
+  private setStopoverParams(stopovers: number, params: HttpParams): HttpParams {
     if (stopovers === 0) {
       params = params.append('directFlights', '1');
     } else {
@@ -46,14 +46,14 @@ export class FlightCheckService {
     return params;
   }
 
-  public setPriceLimitParams(flight: FlightDetails, params: HttpParams): HttpParams {
+  private setPriceLimitParams(flight: FlightDetails, params: HttpParams): HttpParams {
     if (flight.priceLimit) {
       params = params.append('price_to', `${flight.priceLimit}`);
     }
     return params;
   }
 
-  public setAdditionalParams(flight: FlightDetails, params: HttpParams): HttpParams {
+  private setAdditionalParams(flight: FlightDetails, params: HttpParams): HttpParams {
     const departureDays = (flight.departures);
     if (departureDays.length) {
       params = params.append('dateFrom', `${departureDays[0]}`);
@@ -63,14 +63,14 @@ export class FlightCheckService {
     return returnDays ? this.setReturnParams(params, departureDays, returnDays) : this.setOnewayParams(params, departureDays);
   }
 
-  public addFlightToParams(flight: FlightDetails, params: HttpParams) {
+  private addFlightToParams(flight: FlightDetails, params: HttpParams) {
     if (flight.to) {
       params = params.append('to', `${flight.to}`);
     }
     return params;
   }
 
-  public setReturnParams(params: HttpParams, departureDays: string[], returnDays: string[]): HttpParams {
+  private setReturnParams(params: HttpParams, departureDays: string[], returnDays: string[]): HttpParams {
     params = params.append('typeFlight', 'round').append('returnFrom', `${returnDays[0]}`);
 
     if (returnDays.length > 2) {
@@ -79,7 +79,7 @@ export class FlightCheckService {
     return params;
   }
 
-  public setOnewayParams(params: HttpParams, departureDays: string[]): HttpParams {
+  private setOnewayParams(params: HttpParams, departureDays: string[]): HttpParams {
     params = params.append('typeFlight', 'oneway');
     if (departureDays.length > 2) {
       params = params.append('dateTo', `${departureDays[1]}`);
