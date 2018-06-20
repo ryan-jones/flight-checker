@@ -21,12 +21,9 @@ export class SearchResultsComponent implements OnChanges {
   @Output() onRemoveFlightPath: EventEmitter<FlightCoordinates[]> = new EventEmitter<FlightCoordinates[]>();
 
   private searchResults: SearchResults;
-  private loaded = false;
+  public loaded = false;
 
-  constructor(
-    private flightCheckService: FlightCheckService,
-    private searchResultsService: SearchResultsService
-  ) {}
+  constructor(private flightCheckService: FlightCheckService, private searchResultsService: SearchResultsService) {}
 
   ngOnChanges() {
     if (this.searchResultsService.searchResults) {
@@ -35,7 +32,7 @@ export class SearchResultsComponent implements OnChanges {
     }
   }
 
-  private addFlightPath(index: number): void {
+  public addFlightPath(index: number): void {
     const routes = this.searchResults.flightResults.data[index].route;
     const coordinates = this.flightCheckService.createFlightCoordinates(routes);
     const lastRoute = routes[routes.length - 1];
@@ -43,5 +40,5 @@ export class SearchResultsComponent implements OnChanges {
     this.onAddFlightPath.emit(coordinates);
   }
 
-  private removeFlightPath = (): void => this.onRemoveFlightPath.emit(null);
+  public removeFlightPath = (): void => this.onRemoveFlightPath.emit(null);
 }

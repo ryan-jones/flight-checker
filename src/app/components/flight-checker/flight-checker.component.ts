@@ -31,7 +31,7 @@ export class FlightCheckerComponent implements OnInit {
   private priceLimit: number;
   private stopovers = 0;
 
-  private loaded = true;
+  public loaded = true;
   private departureRange = false;
   private returnRange = false;
 
@@ -53,9 +53,7 @@ export class FlightCheckerComponent implements OnInit {
   }
 
   private setDepartureAutocomplete(): void {
-    const departureAutocomplete = this.flightCheckViewService.buildAutocomplete(
-      this.departureInput.nativeElement
-    );
+    const departureAutocomplete = this.flightCheckViewService.buildAutocomplete(this.departureInput.nativeElement);
     departureAutocomplete.addListener('place_changed', () => {
       this.departureView = departureAutocomplete.getPlace();
       this.flightCheckService
@@ -65,9 +63,7 @@ export class FlightCheckerComponent implements OnInit {
   }
 
   private setArrivalAutocomplete(): void {
-    const arrivalAutocomplete = this.flightCheckViewService.buildAutocomplete(
-      this.arrivalInput.nativeElement
-    );
+    const arrivalAutocomplete = this.flightCheckViewService.buildAutocomplete(this.arrivalInput.nativeElement);
     arrivalAutocomplete.addListener('place_changed', () => {
       this.arrivalView = arrivalAutocomplete.getPlace();
       this.flightCheckService
@@ -76,28 +72,25 @@ export class FlightCheckerComponent implements OnInit {
     });
   }
 
-  private searchFlights(): void {
+  public searchFlights(): void {
+    const { flightCheckViewService, departureStartDate, departureEndDate, returnStartDate, returnEndDate } = this;
     this.loaded = false;
-    const dates = [
-      this.departureStartDate,
-      this.departureEndDate,
-      this.returnStartDate,
-      this.returnEndDate
-    ];
-    const newDates = this.flightCheckViewService.formatSelectDates(dates);
+    const dates = [departureStartDate, departureEndDate, returnStartDate, returnEndDate];
+    const newDates = flightCheckViewService.formatSelectDates(dates);
     this.arrangeFlightDates(newDates);
   }
 
   private arrangeFlightDates(dates: string[]): void {
-    const departureDates = this.flightCheckViewService.setDepartureDates(dates);
-    const returnDates = this.flightCheckViewService.setReturnDates(dates);
-    const flight = this.flightCheckService.buildFlightPlan(
-      this.departureLocation,
-      this.arrivalLocation,
+    const { flightCheckService, flightCheckViewService, departureLocation, arrivalLocation, selectedCurrency, priceLimit } = this;
+    const departureDates = flightCheckViewService.setDepartureDates(dates);
+    const returnDates = flightCheckViewService.setReturnDates(dates);
+    const flight = flightCheckService.buildFlightPlan(
+      departureLocation,
+      arrivalLocation,
       departureDates,
-      this.selectedCurrency,
+      selectedCurrency,
       returnDates,
-      this.priceLimit
+      priceLimit
     );
     this.getFlights(flight);
   }
@@ -114,11 +107,11 @@ export class FlightCheckerComponent implements OnInit {
       });
   }
 
-  private addDepartureRange = (): boolean => this.departureRange = !this.departureRange;
+  public addDepartureRange = (): boolean => this.departureRange = !this.departureRange;
 
-  private addReturnRange = (): boolean => this.returnRange = !this.returnRange;
+  public addReturnRange = (): boolean => this.returnRange = !this.returnRange;
 
-  private setCurrency = (currency: string): string => this.selectedCurrency = currency;
+  public setCurrency = (currency: string): string => this.selectedCurrency = currency;
 
   private setSearchResults = (flightResults: any): SearchResults => this.searchResultsService.setSearchResults({flightResults});
 

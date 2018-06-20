@@ -1,0 +1,23 @@
+<div class="input-group">
+  <div class="input-group-btn">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Currency
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li>
+        <a>$USD</a>
+      </li>
+      <li>
+        <a>€EUR</a>
+      </li>
+      <li>
+        <a>Something else here</a>
+      </li>
+      <li role="separator" class="divider"></li>
+      <li>
+        <a>Separated link</a>
+      </li>
+    </ul>
+  </div>
+  <input [(ngModel)]="priceLimit" class="form-control" type="text" placeholder="$200" aria-label="...">
+</div>
