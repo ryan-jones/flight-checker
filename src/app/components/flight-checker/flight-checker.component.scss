@@ -16,22 +16,26 @@
   margin: 1% 2% 0 2%;
   padding: 2% 2% 1%;
   background-color: $light-blue;
+
+}
+
+.flight-search-btn {
+  color: #fff;
 }
 
 i,
-#search-button {
+#search-button,
+label {
   color: #fff;
 }
 
 #search-button {
   background-color: $dark-blue;
-  margin: 6% 10% 0 0;
-}
+  margin: 1.5em 10% 0 0;
+  width: 100%;
 
-#search-button:hover {
-  background-color: green;
-}
-
-label {
-  color: #fff;
+  &:hover {
+    background-color: #fff;
+    color: $dark-blue;
+  }
 }
