@@ -54,10 +54,9 @@ export class FlightCheckService {
     flight: FlightDetails,
     params: HttpParams
   ): HttpParams {
-    if (flight.priceLimit) {
-      params = params.append("price_to", `${flight.priceLimit}`);
-    }
-    return params;
+    return flight.priceLimit
+      ? params.append("price_to", `${flight.priceLimit}`)
+      : params;
   }
 
   private setAdditionalParams(
@@ -69,22 +68,17 @@ export class FlightCheckService {
       params = params.append("dateFrom", `${departureDays[0]}`);
     }
     params = this.addFlightToParams(flight, params);
-    const returnDays = flight.returns || "";
-    return returnDays
-      ? this.setReturnParams(params, departureDays, returnDays)
+    return flight.returns
+      ? this.setReturnParams(params, flight.returns)
       : this.setOnewayParams(params, departureDays);
   }
 
   private addFlightToParams(flight: FlightDetails, params: HttpParams) {
-    if (flight.to) {
-      params = params.append("to", `${flight.to}`);
-    }
-    return params;
+    return flight.to ? params.append("to", `${flight.to}`) : params;
   }
 
   private setReturnParams(
     params: HttpParams,
-    departureDays: string[],
     returnDays: string[]
   ): HttpParams {
     params = params
