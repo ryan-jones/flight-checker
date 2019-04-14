@@ -1,23 +1,25 @@
-<div class="input-group">
-  <div class="input-group-btn">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Currency
-      <span class="caret"></span>
+<div class="input-group" id="price-limit">
+  <div class="input-group-prepend">
+    <button
+      class="btn btn-default dropdown-toggle"
+      type="button"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      Currency
     </button>
-    <ul class="dropdown-menu">
-      <li>
-        <a>$USD</a>
-      </li>
-      <li>
-        <a>€EUR</a>
-      </li>
-      <li>
-        <a>Something else here</a>
-      </li>
-      <li role="separator" class="divider"></li>
-      <li>
-        <a>Separated link</a>
-      </li>
-    </ul>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">$USD</a>
+      <a class="dropdown-item" href="#">€EUR</a>
+      <a class="dropdown-item" href="#">GBP</a>
+    </div>
   </div>
-  <input [(ngModel)]="priceLimit" class="form-control" type="text" placeholder="$200" aria-label="...">
+  <input
+    [(ngModel)]="priceLimit"
+    class="form-control"
+    type="text"
+    placeholder="$200"
+    aria-label="..."
+  />
 </div>

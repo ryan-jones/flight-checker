@@ -8,7 +8,7 @@ export class FlightCheckerViewService {
     new google.maps.places.Autocomplete(input);
 
   public formatSelectDates = (dates: string[]): string[] =>
-    (dates = dates.map(date => (date ? this.formatDate(date) : date)));
+    dates.map(this.formatDate);
 
   public formatDate(date: string): string {
     const newDate = new Date(date);
@@ -16,12 +16,6 @@ export class FlightCheckerViewService {
       newDate.getMonth() <= 8
         ? `0${newDate.getMonth() + 1}`
         : `${newDate.getMonth() + 1}`;
-    const convertedDates = `${newDate.getDate()}/${month}/${newDate.getFullYear()}`;
-    return convertedDates;
+    return `${newDate.getDate()}/${month}/${newDate.getFullYear()}`;
   }
-
-  public setDepartureDates = (dates: string[]): string[] =>
-    dates.splice(0, 2).filter(Boolean);
-
-  public setReturnDates = (dates: string[]): string[] => dates.filter(Boolean);
 }

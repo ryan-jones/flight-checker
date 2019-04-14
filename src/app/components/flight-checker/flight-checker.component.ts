@@ -1,22 +1,29 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
-import { GooglePlace } from '../../models/google.model';
-import { FlightCheckerViewService } from '../../services/flight-checker.service';
-import { FlightCheckService } from '../../services/flight-check.service';
-import { SearchResultsService } from '../../services/search-results.service';
-import { FlightDetails } from '../../models/flights.model';
-import { DestinationViews, SearchResults } from '../../models/search-results.model';
-
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  Output,
+  EventEmitter
+} from "@angular/core";
+import { GooglePlace } from "../../models/google.model";
+import { FlightCheckerViewService } from "../../services/flight-checker.service";
+import { FlightCheckService } from "../../services/flight-check.service";
+import { SearchResultsService } from "../../services/search-results.service";
+import { FlightDetails } from "../../models/flights.model";
+import { DestinationViews } from "../../models/search-results.model";
 
 @Component({
-  selector: 'flight-checker',
-  templateUrl: './flight-checker.component.html',
-  styleUrls: ['./flight-checker.component.scss']
+  selector: "flight-checker",
+  templateUrl: "./flight-checker.component.html",
+  styleUrls: ["./flight-checker.component.scss"]
 })
 export class FlightCheckerComponent implements OnInit {
-  @ViewChild('departure') departureInput;
-  @ViewChild('arrival') arrivalInput;
+  @ViewChild("departure") departureInput;
+  @ViewChild("arrival") arrivalInput;
   @Output() onSearching: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() onSetDestinationViews: EventEmitter<DestinationViews> = new EventEmitter<DestinationViews>();
+  @Output() onSetDestinationViews: EventEmitter<
+    DestinationViews
+  > = new EventEmitter<DestinationViews>();
   private departureView: GooglePlace;
   private arrivalView: GooglePlace;
 
@@ -26,7 +33,7 @@ export class FlightCheckerComponent implements OnInit {
   private departureEndDate: string;
   private returnStartDate: string;
   private returnEndDate: string;
-  private selectedCurrency = 'USD';
+  private selectedCurrency = "USD";
 
   private priceLimit: number;
   private stopovers = 0;
@@ -53,8 +60,10 @@ export class FlightCheckerComponent implements OnInit {
   }
 
   private setDepartureAutocomplete(): void {
-    const departureAutocomplete = this.flightCheckViewService.buildAutocomplete(this.departureInput.nativeElement);
-    departureAutocomplete.addListener('place_changed', () => {
+    const departureAutocomplete = this.flightCheckViewService.buildAutocomplete(
+      this.departureInput.nativeElement
+    );
+    departureAutocomplete.addListener("place_changed", () => {
       this.departureView = departureAutocomplete.getPlace();
       this.flightCheckService
         .getLocation(this.departureView.name)
@@ -63,8 +72,10 @@ export class FlightCheckerComponent implements OnInit {
   }
 
   private setArrivalAutocomplete(): void {
-    const arrivalAutocomplete = this.flightCheckViewService.buildAutocomplete(this.arrivalInput.nativeElement);
-    arrivalAutocomplete.addListener('place_changed', () => {
+    const arrivalAutocomplete = this.flightCheckViewService.buildAutocomplete(
+      this.arrivalInput.nativeElement
+    );
+    arrivalAutocomplete.addListener("place_changed", () => {
       this.arrivalView = arrivalAutocomplete.getPlace();
       this.flightCheckService
         .getLocation(this.arrivalView.name)
@@ -73,24 +84,27 @@ export class FlightCheckerComponent implements OnInit {
   }
 
   public searchFlights(): void {
-    const { flightCheckViewService, departureStartDate, departureEndDate, returnStartDate, returnEndDate } = this;
     this.loaded = false;
-    const dates = [departureStartDate, departureEndDate, returnStartDate, returnEndDate];
-    const newDates = flightCheckViewService.formatSelectDates(dates);
+    const dates = [
+      this.departureStartDate,
+      this.departureEndDate,
+      this.returnStartDate,
+      this.returnEndDate
+    ].filter(Boolean);
+    const newDates = this.flightCheckViewService.formatSelectDates(dates);
     this.arrangeFlightDates(newDates);
   }
 
   private arrangeFlightDates(dates: string[]): void {
-    const { flightCheckService, flightCheckViewService, departureLocation, arrivalLocation, selectedCurrency, priceLimit } = this;
-    const departureDates = flightCheckViewService.setDepartureDates(dates);
-    const returnDates = flightCheckViewService.setReturnDates(dates);
-    const flight = flightCheckService.buildFlightPlan(
-      departureLocation,
-      arrivalLocation,
+    const departureDates = dates.splice(0, 2);
+    const returnDates = dates;
+    const flight = this.flightCheckService.buildFlightPlan(
+      this.departureLocation,
+      this.arrivalLocation,
       departureDates,
-      selectedCurrency,
+      this.selectedCurrency,
       returnDates,
-      priceLimit
+      this.priceLimit
     );
     this.getFlights(flight);
   }
@@ -102,18 +116,21 @@ export class FlightCheckerComponent implements OnInit {
       .subscribe((result: any) => {
         this.flightResults = result;
         this.loaded = true;
-        this.setSearchResults(this.flightResults);
+        this.searchResultsService.setSearchResults({
+          flightResults: this.flightResults
+        });
         this.setDestinationViews(this.departureView, this.arrivalView);
       });
   }
 
-  public addDepartureRange = (): boolean => this.departureRange = !this.departureRange;
+  public addDepartureRange = () => (this.departureRange = !this.departureRange);
 
-  public addReturnRange = (): boolean => this.returnRange = !this.returnRange;
+  public addReturnRange = () => (this.returnRange = !this.returnRange);
 
-  public setCurrency = (currency: string): string => this.selectedCurrency = currency;
+  public setCurrency = (currency: string) => (this.selectedCurrency = currency);
 
-  private setSearchResults = (flightResults: any): SearchResults => this.searchResultsService.setSearchResults({flightResults});
-
-  private setDestinationViews = (departureView: GooglePlace, arrivalView: GooglePlace) => this.onSetDestinationViews.emit({ departureView, arrivalView });
+  private setDestinationViews = (
+    departureView: GooglePlace,
+    arrivalView: GooglePlace
+  ) => this.onSetDestinationViews.emit({ departureView, arrivalView });
 }

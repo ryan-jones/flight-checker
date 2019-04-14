@@ -1,11 +1,11 @@
-@import '~sass/variables';
+@import "~sass/variables";
 
 .ind-route {
   box-shadow: 0px 1px 1px 1px $shadow;
-}
 
-.ind-route:hover {
-  box-shadow: 0px 3px 3px 1px $shadow;
+  &:hover {
+    box-shadow: 0px 3px 3px 1px $shadow;
+  }
 }
 
 .arrow p {

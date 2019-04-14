@@ -1,59 +1,60 @@
-@import '~sass/variables';
+@import "~sass/variables";
+
+@mixin search-containers() {
+  background-color: #fff;
+  height: 100%;
+  padding: 10px;
+}
 
 .container-fluid {
   height: 100vh;
   background-color: $main-background;
 }
 
-.flight-search,
-.search-result-container {
+.flight-search {
   border-radius: 5px;
 }
 
-.flight-search {
-  margin: 1% 2% 0 2%;
-  padding: 2% 2% 1%;
-  background-color: $light-blue;
-}
-
-.search-result-container {
+.search {
+  border-radius: 5px;
   height: 75vh;
-  margin: 2% 2% 1% 2%;
+  margin: 15px 15px 10px 15px;
   background-color: $light-blue;
-  padding: 1%;
-}
-
-.container-fluid,
-.search-result-container,
-.search-result {
+  padding: 10px;
   overflow: scroll;
+
+  &__row {
+    height: inherit;
+  }
+
+  &__map {
+    @include search-containers();
+    border-radius: 5px 0 0 5px;
+  }
+
+  &__result {
+    @include search-containers();
+    overflow: scroll;
+    border-radius: 0 5px 5px 0;
+  }
 }
 
-.map,
-.search-result {
-  background-color: #fff;
-  height: 100%;
-  padding: 1%;
-}
-
-.map {
-  border-radius: 5px 0 0 5px;
+.flight-search {
+  margin: 10px 15px 0;
+  padding: 15px 15px 10px;
+  background-color: $light-blue;
 }
 
 #map-canvas {
   height: 100%;
 }
 
-.search-result {
-  border-radius: 0 5px 5px 0;
-}
-
 .pricing {
   margin: 10% 0;
   display: flex;
   flex-direction: column;
-}
 
-.pricing > h3 {
-  margin: 1% 1% -1% 1%;
+  h3 {
+    margin: 10px 10px -10px 10px;
+  }
 }

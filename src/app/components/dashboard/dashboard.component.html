@@ -1,18 +1,22 @@
 <div class="container-fluid">
   <div class="flight-search box-shadow">
-    <flight-checker (onSearching)="onSearching($event)" (onSetDestinationViews)="onSetDestinationViews($event)"></flight-checker>
+    <flight-checker
+      (onSearching)="onSearching($event)"
+      (onSetDestinationViews)="onSetDestinationViews($event)"
+    ></flight-checker>
   </div>
 
-  <div class="search-result-container box-shadow">
-    <div class="col-md-5 map">
-      <div id="map-canvas" class="box-shadow">
-      </div>
+  <div class="search row box-shadow">
+    <div class="col-md-5 col-sm-12 search__map">
+      <div id="map-canvas" class="box-shadow"></div>
     </div>
-    <div class="col-md-7 search-result">
-      <search-results *ngIf="searching && destinationViews"
+    <div class="col-md-7 col-sm-12 search__result">
+      <search-results
+        *ngIf="searching && destinationViews"
         [destinationViews]="destinationViews"
         (onAddFlightPath)="addFlightPath($event)"
-        (onRemoveFlightPath)="removeFlightPath()">
+        (onRemoveFlightPath)="removeFlightPath()"
+      >
       </search-results>
     </div>
   </div>
